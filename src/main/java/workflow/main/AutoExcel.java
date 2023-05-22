@@ -74,7 +74,44 @@ public class AutoExcel {
         }
     }
 
-    //示例 - 默认实现：
+    //把前三固定的步骤给出 -
+    //      最终得到 Class 对象，可以通过Template获取其BaseMeta（或者通过DBTemplate获取其DBMeta）
+    public Upstream<?> readExcel(File file,String path,String name,String clzName){
+        //1.拿到Excel表头
+        return Upstream.create((ObservableEmitter<Map<Integer, String>>) emitter -> {
+            //事件起源，获取表头信息
+            //拿到了表头信息，向下传递
+            System.out.println("step1,拿到Excel表头");
+            try {
+                EasyExcelUtil.invokeHead(Files.newInputStream(file.toPath()), emitter::onNext);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).convert(t->{
+            System.out.println("step2,生成字节码");
+            //2. 生成字节码
+            if (!(mBytecodeGenerator instanceof DBBytecodeGenerator)){
+                throw new RuntimeException("excel2table function needs DBBytecodeGenerator!");
+            }
+            return mBytecodeGenerator.generate(t);
+        }).convert(bytes -> {
+            System.out.println("step3,文件存储");
+            //3.文件存储
+            FileUtil.storeFile(bytes,path,name,FileUtil.Suffix.CLASS);
+            System.out.println("step4,类加载，字节码转为类对象");
+            //4.类加载，字节码转为类对象
+            ClassProvider provider = mClassProvider;
+            Class clz = null;
+            try {
+                clz = provider.findClass(clzName,bytes);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+            return clz;
+        });
+    }
+
+    //完整示例 - 默认实现：
     /**
      * 解析事件流，1,2,3,4是默认实现，故而这里给到默认实现
      */
