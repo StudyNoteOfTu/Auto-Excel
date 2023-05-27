@@ -7,8 +7,8 @@ import org.objectweb.asm.FieldVisitor;
 import java.util.Map;
 
 public class DBBytecodeGenerator extends DefaultBytecodeGenerator {
-    public DBBytecodeGenerator(String clzName) {
-        super(clzName);
+    public DBBytecodeGenerator() {
+
     }
 
     @Override

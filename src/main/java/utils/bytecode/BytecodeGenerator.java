@@ -44,6 +44,7 @@ public abstract class BytecodeGenerator implements IBytecodeGenerator{
 
     //必须重写给到类名信息
     protected abstract String getName();
+    public abstract void setName(String clzName);
 
     //----------以下为默认实现----------
 

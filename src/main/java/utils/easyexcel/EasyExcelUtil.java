@@ -33,7 +33,7 @@ public class EasyExcelUtil {
     public static void invokeHead(InputStream is,String sheetName,ExcelHeadCallback callback){
         invokeHead(is,null,sheetName,callback);
     }
-    private static void invokeHead(InputStream is,Integer sheetNo,String sheetName, ExcelHeadCallback callback) {
+    public static void invokeHead(InputStream is,Integer sheetNo,String sheetName, ExcelHeadCallback callback) {
         if (callback == null) return;
         ExcelReaderBuilder read = EasyExcel.read(is, new AnalysisEventListener<Object>() {
             @Override
@@ -78,7 +78,7 @@ public class EasyExcelUtil {
     public static void read(InputStream is,  Class<?> templateClz,ReadListener<Object> listener,String sheetName){
         read(is,templateClz,null,sheetName,listener);
     }
-    private static void read(InputStream is, Class<?> templateClz, Integer sheetNo,String sheetName,ReadListener<Object> listener){
+    public static void read(InputStream is, Class<?> templateClz, Integer sheetNo,String sheetName,ReadListener<Object> listener){
         ExcelReaderBuilder read = EasyExcel.read(is, templateClz, listener);
         if (sheetNo!= null){
             read.sheet(sheetNo).doRead();

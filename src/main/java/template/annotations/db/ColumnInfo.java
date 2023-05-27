@@ -8,7 +8,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 如果模板类需要用于数据库操作，那么就要提供表信息
+ * 字段在数据库中的信息
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)

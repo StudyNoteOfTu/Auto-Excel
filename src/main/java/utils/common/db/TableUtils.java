@@ -118,8 +118,7 @@ public class TableUtils {
     /**
      * 建表
      */
-    public static BaseMeta create(Class<?> clz) {
-        System.out.println("create begin");
+    public static DBMeta create(Class<?> clz) {
         DBTemplate t = new DBTemplate();
         DBMeta meta = t.parse(clz);
         //开始建表
@@ -150,11 +149,9 @@ public class TableUtils {
                 sb.append(")ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n");
             }
         }
-        System.out.println("create near end");
         String sqlStatement = sb.toString();
         long id = CRUDTemplate.executeUpdateGetKey(new SqlParam(sqlStatement));
         meta.setId(String.valueOf(id));
-        System.out.println("create end");
         return meta;
     }
 
